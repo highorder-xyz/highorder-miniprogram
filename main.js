@@ -14,16 +14,11 @@ app.$mount()
 
 // #ifdef VUE3
 import { createSSRApp } from 'vue'
-import { bootup } from './index'
-async function createHighOrderApp() {
-    const app = createSSRApp(App)
-    await bootup([Config.app], {})
-    return app
-}
+import { setup } from './index'
 
 export function createApp() {
   const app = createSSRApp(App)
-  bootup([Config.app], {})
+  setup([Config.app], {})
   return {
     app: app
   }

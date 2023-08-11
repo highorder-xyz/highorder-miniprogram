@@ -30,6 +30,7 @@ import {
     appGlobal,
     Page,
     AppCore,
+    AppConfig,
     VideoElement,
     ImageElement,
     IconElement,
@@ -37,11 +38,17 @@ import {
     NavBarElement,
     LinkElement
 } from './core'
-import { InitAdCommand, InitAdCommandArg, PlayableApplyCommand, PlayableApplyCommandArg, PlayableResult, ShowAdCommand, ShowAdCommandArg } from './client'
-
-import { app_platform } from './platform';
-import { HolaCommand, ShowAlertCommandArg, ShowMotionCommandArg } from './client';
-
+import { 
+    InitAdCommand,
+    InitAdCommandArg,
+    ShowAdCommand,
+    ShowAdCommandArg,
+    PlayableResult,
+    HolaCommand,
+    ShowAlertCommandArg,
+} from './client'
+import resources from './common/locales.json'
+import { app_platform} from './platform'
 import { AdHelper, AdShowOptions } from './adshow';
 import { randomString } from './db';
 
@@ -94,6 +101,25 @@ export interface AlertOption{
     width?: number,
     duration?: number,
     closeIn?: number
+}
+
+let started = false;
+
+export async function startup(): Promise<void> {
+    const init_options = app_platform.init_options
+    const platform_info = app_platform.getPlatform()
+    const language = init_options.language || platform_info['language'] || 'en'
+    
+    await i18next.init({
+        lng: language,
+        debug: false,
+        resources: resources
+    });
+    
+    await AppCore.init()
+    const app_id = AppCore.app_configs.default.appId
+    await AppCore.switchTo(app_id)
+    await app_platform.initialize(init_options)
 }
 
 export class AlertHelper {
@@ -482,7 +508,6 @@ export class PageRender {
             if(command.name === 'start_new_session'){
                 this.sessionStart()
             } else if(command.name === 'show_motion'){
-                const args = command.args as ShowMotionCommandArg
             } else if (command.name === 'show_alert'){
                 const args = command.args as ShowAlertCommandArg
                 const msg = args.text

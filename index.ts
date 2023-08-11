@@ -1,33 +1,13 @@
 
-import i18next from 'i18next';
-import resources from './common/locales.json'
 import { AppCore, AppConfig} from "./core"
 import { app_platform, AdReady, AdOptions, AdPlugin, WeChatPlugin} from './platform'
 
 
-export async function bootup(app_configs: AppConfig[], init_options:Record<string, any>): Promise<void> {
+export function setup(app_configs: AppConfig[], init_options:Record<string, any>) {
     for(const config of app_configs){
         AppCore.addAppConfig(config)
     }
-    const platform_info = app_platform.getPlatform()
-    const language = init_options.language || platform_info['language'] || 'en'
-    
-    await i18next.init({
-        lng: language,
-        debug: false,
-        resources: resources
-    });
-    
-    await AppCore.init()
-    const app_id = app_configs[0].appId
-    await AppCore.switchTo(app_id)
-    const app_core = AppCore.getCore(app_id)
-
-    if(app_platform.mustAgreePrivacy() && !app_core.privacy_agreed){
-        app_platform.init_options = init_options
-    } else {
-        await app_platform.initialize(init_options)
-    }
+    app_platform.init_options = init_options
 }
 
 class MiniProgramAdPlugin {

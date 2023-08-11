@@ -10,6 +10,7 @@
     import Element from './element';
     import { appGlobal, AppCore } from '@/core';
     import {
+        startup,
         PageRender
     } from '@/app_render';
     
@@ -25,7 +26,8 @@
         },
         computed:{
             page() {
-                if(this.app_id !== undefined){
+                if(this.app_id !== undefined && this.app_id !== ""){
+                    console.log('render page')
                     return PageRender.getPageRender(this.app_id)
                 }
                 return {
@@ -34,9 +36,12 @@
             }
         },
         created(){
-            let app_core = AppCore.getCore(this.app_id)
-            console.log('session start')
-            // this.page.sessionStart()
+            startup().then(() => {
+                let app_core = AppCore.getCore(appGlobal.app_id)
+                this.app_id = appGlobal.app_id
+                console.log('session start')
+                // this.page.sessionStart()
+            })
         },
         onLoad() {
         },

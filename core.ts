@@ -506,6 +506,9 @@ export class AppCore {
     }
 
     static addAppConfig(config: AppConfig){
+        if(Object.keys(this.app_configs).length === 0){
+            this.app_configs['default'] = config
+        }
         this.app_configs[config.appId] = config
     }
 
