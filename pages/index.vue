@@ -8,21 +8,37 @@
 
 <script>
     import Element from './element';
+    import { appGlobal, AppCore } from '@/core';
     import {
-        page
-    } from '../core';
-
+        PageRender
+    } from '@/app_render';
+    
     export default {
         components: {
             Element
         },
         data() {
+            let app_id = appGlobal.app_id
             return {
-                page: page
+                app_id: app_id
             }
         },
+        computed:{
+            page() {
+                if(this.app_id !== undefined){
+                    return PageRender.getPageRender(this.app_id)
+                }
+                return {
+                    "elements": []
+                }
+            }
+        },
+        created(){
+            let app_core = AppCore.getCore(this.app_id)
+            console.log('session start')
+            // this.page.sessionStart()
+        },
         onLoad() {
-
         },
         methods: {
 

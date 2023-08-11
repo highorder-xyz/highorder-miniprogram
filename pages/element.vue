@@ -1,5 +1,5 @@
 <template>
-    <image v-if="$props.name=='image'" :src="$props.props.src" :class="[$props.props.cls]"></image>
+    <uv-image v-if="$props.name=='image'" :src="$props.props.src" :class="[$props.props.cls]"></uv-image>
 </template>
 
 <script>

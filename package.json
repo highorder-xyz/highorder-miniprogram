@@ -1,0 +1,25 @@
+{
+  "name": "highorder-miniprogram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/highorder-xyz/highorder-miniprogram.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/highorder-xyz/highorder-miniprogram/issues"
+  },
+  "homepage": "https://github.com/highorder-xyz/highorder-miniprogram#readme",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "i18next": "^23.4.4",
+    "ky": "^0.33.3"
+  }
+}

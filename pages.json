@@ -3,13 +3,13 @@
 		{
 			"path": "pages/index",
 			"style": {
-				"navigationBarTitleText": "hyperboxapp"
+				"navigationBarTitleText": "HighOrder Mini Program"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "hyperboxapp",
+		"navigationBarTitleText": "HighOrder Mini Program",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},

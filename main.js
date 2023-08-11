@@ -1,4 +1,5 @@
 import App from './App'
+import Config from './config'
 
 // #ifndef VUE3
 import Vue from 'vue'
@@ -13,10 +14,18 @@ app.$mount()
 
 // #ifdef VUE3
 import { createSSRApp } from 'vue'
+import { bootup } from './index'
+async function createHighOrderApp() {
+    const app = createSSRApp(App)
+    await bootup([Config.app], {})
+    return app
+}
+
 export function createApp() {
   const app = createSSRApp(App)
+  bootup([Config.app], {})
   return {
-    app
+    app: app
   }
 }
 // #endif
