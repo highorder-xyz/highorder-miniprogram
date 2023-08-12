@@ -49,7 +49,7 @@ import {
 } from './client'
 import resources from './common/locales.json'
 import { app_platform} from './platform'
-import { AdHelper, AdShowOptions } from './adshow';
+import { AdHelper, AdShowOptions } from './ad';
 import { randomString } from './db';
 
 export interface ConditionResponse {
@@ -121,6 +121,24 @@ export async function startup(): Promise<void> {
     await AppCore.switchTo(app_id)
     await app_platform.initialize(init_options)
 }
+
+export const init_objects = reactive({
+    "page": {
+        "elements": [
+            {
+            	name: 'image',
+                is_container: false,
+                props: {
+                    "src": "/static/logo.png",
+                    "class": "logo"
+                },
+            }
+        ]
+        
+    }
+})
+
+export const init_page = init_objects.page
 
 export class AlertHelper {
     option:AlertOption

@@ -19,14 +19,14 @@ export class DataStore {
     }
 
     static async get(key: string){
-        return new Promise<object|string|number>((resolve, reject) => {
+        return new Promise<object|string|number|undefined>((resolve, reject) => {
             uni.getStorage({
                 key: `kvstore_${key}`,
                 success: function (res) {
                     resolve(res.data);
                 },
                 fail: function(err) {
-                    reject(err)
+                    resolve(undefined)
                 }
             })
         })
@@ -48,14 +48,14 @@ export class DataStore {
     }
 
     static async get_app_kv(key: [string, string]){
-        return new Promise<object|string|number>((resolve, reject) => {
+        return new Promise<object|string|number|undefined>((resolve, reject) => {
             uni.getStorage({
                 key: `app_kvstore_${key[0]}_${key[1]}`,
                 success: function (res) {
                     resolve(res.data);
                 },
-                fail: function(err) {
-                    reject(err)
+                fail: function() {
+                    resolve(undefined)
                 }
             })
         })
