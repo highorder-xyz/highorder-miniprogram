@@ -7,9 +7,10 @@
     export default {
         name: 'element',
         components: {
-            HImage
+            HImage,
         },
         data() {
+            console.log('element', this.$props)
             return {}
         },
         onLoad() {

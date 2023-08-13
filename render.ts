@@ -122,23 +122,27 @@ export async function startup(): Promise<void> {
     await app_platform.initialize(init_options)
 }
 
-export const init_objects = reactive({
-    "page": {
-        "elements": [
-            {
-            	name: 'image',
-                is_container: false,
-                props: {
-                    "src": "/static/logo.png",
-                    "class": "logo"
-                },
-            }
-        ]
+const init_elements = [
+    {
+        name: "column",
+        is_container: true,
+        props: {
+            "class": "splash_container",
+            elements: [
+                {
+                    name: 'image',
+                    is_container: false,
+                    props:{
+                        "src": "/static/logo.png",
+                        "class":"splash_logo"
+                    }
+                }
+            ]
+        }
         
     }
-})
-
-export const init_page = init_objects.page
+    
+]
 
 export class AlertHelper {
     option:AlertOption
@@ -371,7 +375,7 @@ export class PageRender {
         this.alert_helper = new AlertHelper()
         this.modal_helper = new ModalHelper()
         this.ad_helper = new AdHelper()
-        this.elements = []
+        this.elements = init_elements
     }
     
     

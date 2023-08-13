@@ -1,7 +1,7 @@
 <template>
-    <view :class="$props.class" class="h-image-view">
-        <image :src="$props.src" :mode="$props.mode"></image>
-    </view>
+    <template>
+        <image :class="$props.class" class="h-image-view" :src="$props.src" :mode="$props.mode"></image>
+    </template>
 </template>
 
 <script>

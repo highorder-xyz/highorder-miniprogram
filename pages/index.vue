@@ -1,23 +1,35 @@
 <template>
     <view class="content">
-        <Element v-for="(element, index) in page.elements" :key="index" :name="element.name" :props="element.props" :class="element.class">
-        </Element>
+        <template v-for="(element, index) in page.elements" :key="index">
+            <Element v-if="element.is_container == false" :key="index" :name="element.name" :props="element.props">
+            </Element>
+            <template v-if="element.is_container == true" :key="index">
+                <h-column v-if="element.name=='column'" :key="index" v-bind="element.props" :class="element.props.class">
+                    <template v-for="(element, index) in element.props.elements" :key="index">
+                        <Element v-if="element.is_container == false" :key="index" :name="element.name" :props="element.props">
+                        </Element>
+                    </template>
+                </h-column>
+            </template>
+        </template>
+        
     </view>
     <slot></slot>
 </template>
 
 <script>
     import Element from './element';
+    import HColumn from '../components/h-column'
     import { appGlobal, AppCore } from '@/core';
     import {
         startup,
-        PageRender,
-        init_page
+        PageRender
     } from '@/render';
     
     export default {
         components: {
-            Element
+            Element,
+            HColumn
         },
         data() {
             let app_id = appGlobal.app_id
@@ -27,12 +39,15 @@
         },
         computed:{
             page() {
-                // if(this.app_id !== undefined && this.app_id !== ""){
-                    // console.log('render page')
-                    // return PageRender.getPageRender(this.app_id)
-                // }
-                console.log(init_page)
-                return init_page
+                if(this.app_id !== undefined && this.app_id !== ""){
+                    console.log('render page')
+                    const _page = PageRender.getPageRender(this.app_id)
+                    console.log(_page.elements)
+                    return _page
+                }
+                return {
+                    "elements":[]
+                }
             }
         },
         created(){
@@ -56,6 +71,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        width: 100vw;
+        height: 100vh;
     }
 </style>
