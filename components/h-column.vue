@@ -10,7 +10,6 @@
         props: {
         },
         created() {
-            console.log('h-column', this.$props.class)
         },
         data() {
             

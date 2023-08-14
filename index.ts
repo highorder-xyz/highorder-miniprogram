@@ -158,6 +158,7 @@ app_platform.register(new MiniProgramHostPlatform())
 
 type RequestMethod = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT' | undefined;
 
+
 async function miniprogram_fetch(resource: RequestInfo, options?: RequestInit) {
     let originFetch = window.fetch;
     let url: string = resource.toString();

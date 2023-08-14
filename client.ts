@@ -1,7 +1,7 @@
 
 import CryptoJS from "crypto-js";
 import { DataStore, AppDataStore } from "./db";
-import ky, { HTTPError, KyResponse, Options, TimeoutError } from 'ky';
+import { ky, HTTPError, KyResponse, Options, TimeoutError } from './request'
 import { app_platform } from "./platform";
 
 export type AnyItem = Record<string | "type", any>
