@@ -89,10 +89,27 @@ export interface RenderContext {
 }
 
 function h(name:string, props?: object, slots?: Record<string, any>){
-    return {
-        "name": name,
-        ...props
+    let sub_elements: Record<string, object[]>  = {}
+    if(slots !== undefined){
+        for(const [name, slot] of slots.entries()){
+            let elements = (slot as Function)()
+            if(! Array.isArray(elements)){
+                elements = [elements]
+            }
+            let new_name = 'elements'
+            if( name !== 'default'){
+                new_name = `${name}_elements`
+            }
+            sub_elements[new_name] = elements
+        }
     }
+    
+    const rendered = {
+        "name": name,
+        ...props,
+        ...sub_elements
+    }
+    return rendered
 }
 
 export interface AlertOption{
