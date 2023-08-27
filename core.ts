@@ -333,7 +333,9 @@ export interface TableViewElement {
 export interface CardElement{
     type: string
     title: string
-    show_border: boolean
+    text?: string
+    image_src?: string,
+    show_border?: boolean
     elements: HolaElement[]
 }
 

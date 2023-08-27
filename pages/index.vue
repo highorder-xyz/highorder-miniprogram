@@ -1,9 +1,9 @@
 <template>
     <view class="content">
         <Element v-for="(element, index) in page.elements" :key="index" 
-            :is_container="element.is_container"
             :name="element.name"
-            :props="element.props">
+            :props="element.props"
+            :elements="element.elements">
         </Element>
     </view>
 </template>
@@ -37,6 +37,11 @@
                 }
             }
         },
+        watch: {
+            "page.elements"(newPage, oldPage){
+                console.log('page changed.', newPage)
+            }
+        },
         created(){
             startup().then(() => {
                 let app_core = AppCore.getCore(appGlobal.app_id)
@@ -61,5 +66,8 @@
         justify-content: flex-start;
         width: 100vw;
         height: 100vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        background-color: rgb(246, 248, 250);
     }
 </style>

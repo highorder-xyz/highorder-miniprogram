@@ -91,7 +91,7 @@ export interface RenderContext {
 function h(name:string, props?: object, slots?: Record<string, any>){
     let sub_elements: Record<string, object[]>  = {}
     if(slots !== undefined){
-        for(const [name, slot] of slots.entries()){
+        for(const [name, slot] of Object.entries(slots)){
             let elements = (slot as Function)()
             if(! Array.isArray(elements)){
                 elements = [elements]
@@ -100,14 +100,14 @@ function h(name:string, props?: object, slots?: Record<string, any>){
             if( name !== 'default'){
                 new_name = `${name}_elements`
             }
-            sub_elements[new_name] = elements
+            sub_elements[name] = elements
         }
     }
     
     const rendered = {
         "name": name,
-        ...props,
-        ...sub_elements
+        props: {...props}, 
+        elements:{...sub_elements}
     }
     return rendered
 }
@@ -142,21 +142,18 @@ export async function startup(): Promise<void> {
 const init_elements = [
     {
         name: "column",
-        is_container: true,
         props: {
             "class": "splash_container",
-            elements: [
-                {
-                    name: 'image',
-                    is_container: false,
-                    props:{
-                        "src": "/static/logo.png",
-                        "class":"splash_logo"
-                    }
+        },
+        elements: {
+            default: [{
+                name: 'image',
+                props:{
+                    "src": "/static/logo.png",
+                    "class":"splash_logo"
                 }
-            ]
+            }]
         }
-        
     }
     
 ]
@@ -593,6 +590,7 @@ export class PageRender {
                 console.error(`no handler for immediate command ${command.name}`)
             }
         }
+        this.render()
     }
     
     executeAction(action: string, args: Record<string, any> = {}, context: RenderContext){
@@ -1261,7 +1259,8 @@ export class PageRender {
     renderCard(element: CardElement, context: RenderContext): object {
         return h("card", {
             title: element.title ?? "",
-            showBorder: element.show_border ?? true
+            text: element.text ?? "",
+            image_src: element.image_src
         }, {
             default: () => {
                 return this.renderElementOrList(element.elements, context)
@@ -1399,7 +1398,7 @@ export class PageRender {
         }
     }
     
-    renderPage(): object {
+    renderPage(): object[] {
         const children: object[] = []
         for (const element of this.page.elements) {
             const context = {
@@ -1414,7 +1413,8 @@ export class PageRender {
         if (this.page.narration.paragraphs.length > 0) {
             children.push(this.renderNarration({route: this.page.route, modal_id: undefined}))
         }
-        return h('div', { class: ["page"] }, [...children])
+        // return h('div', { class: ["page"] }, undefined, [...children])
+        return children;
     }
     
     renderAdditional(): object[] {
@@ -1433,6 +1433,6 @@ export class PageRender {
     }
     
     render() {
-        this.elements = [this.renderPage(), ...this.renderAdditional()]
+        this.elements = [...this.renderPage(), ...this.renderAdditional()]
     }
 }

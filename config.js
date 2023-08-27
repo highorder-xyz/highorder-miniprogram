@@ -1,12 +1,13 @@
 
 let app = 
     {
-        "appId": "APPNM8GB1EC4E35D",
-        "baseUrl": "http://127.0.0.1:5000/",
+        "appId": "AP53WM77M1TCKT5U",
+        "baseUrl": "https://building.highorder.xyz/",
         "privacyUrl": "",
-        "clientKey": "ra2l4bsr",
-        "clientSecret": "p4lygwdkwyhxkjgbcwuqq78dc29cjxk4"
+        "clientKey": "uqngnnz6",
+        "clientSecret": "esxzmmp8y7jw34mm9aset4vgakr9tz4c"
     }
+    
     
 export default {
     app:app
