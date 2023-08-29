@@ -46,18 +46,22 @@
         border-color: rgba(0, 0, 0, 0.2);
         border-width: 0 0 0.55px;
         color: rgba(0, 0, 0, 0.87);
-        height: 44px;
+        height: 32px;
         top: 0px;
         left: 0px;
         right: 0px;
         position: fixed;
         margin-bottom: 8px;
+        padding-top: var(--status-bar-height);
+        padding-bottom: 4px;
     }
     
     .h-navbar-placeholder{
         width: 100vw;
-        height: 44px;
+        height: 32px;
         margin-bottom: 8px;
+        padding-top: var(--status-bar-height);
+        padding-bottom: 4px;
     }
     
     .h-navbar .title {

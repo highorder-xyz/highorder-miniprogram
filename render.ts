@@ -4,6 +4,7 @@ import {
     PlainTextObject,
     HeaderElement,
     FooterElement, HeroElement, NavMenuElement, MenuItemElement,
+    LogoElement,
     DecorationElement, MotionElement, PlayableElement, NarrationParagraph,
     ActionBarElement,
     ActionElement,
@@ -1279,7 +1280,12 @@ export class PageRender {
     }
     
     renderHero(element: HeroElement, context: RenderContext): object {
-        return h("hero", { annotation_text: element.element })
+        return h("hero", { title: element.title, text: element.text, 
+            image_src: element.image_src, annotation_text: element.element })
+    }
+    
+    renderLogo(element: LogoElement, context: RenderContext): object {
+        return h("logo", { text: element.text, image_src: element.image_src})
     }
     
     renderNavMenu(element: NavMenuElement, context: RenderContext): object {
@@ -1378,6 +1384,8 @@ export class PageRender {
             return this.renderHeader(element as HeaderElement, context)
         } else if (element.type === "footer") {
             return this.renderFooter(element as FooterElement, context)
+        } else if (element.type === "logo") {
+            return this.renderLogo(element as LogoElement, context)
         } else if (element.type === "hero") {
             return this.renderHero(element as HeroElement, context)
         } else if (element.type === "nav-menu") {

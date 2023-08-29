@@ -3,13 +3,15 @@
         {
             "path": "pages/index",
 			"style": {
-				"navigationBarTitleText": "HighOrder Mini Program"
+                "navigationStyle": "custom",
+				"navigationBarTitleText": "HighOrder"
 			}
 		}
 	],
     "globalStyle": {
+        "navigationStyle": "custom",
         "navigationBarTextStyle": "black",
-		"navigationBarTitleText": "HighOrder Mini Program",
+		"navigationBarTitleText": "HighOrder",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},

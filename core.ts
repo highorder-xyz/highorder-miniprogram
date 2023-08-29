@@ -268,6 +268,16 @@ export type ActionElement = ActionButtonElement;
 
 export interface HeroElement {
     type: string
+    title: string
+    text: string
+    image_src: string
+    element?: AnnotationTextObject
+}
+
+export interface LogoElement {
+    type: string
+    image_src: string
+    text: string
     element: AnnotationTextObject
 }
 
@@ -346,7 +356,7 @@ export interface CardSwiperElement {
 }
 
 export type HolaElement = (HeaderElement | FooterElement | NavBarElement
-    | HeroElement | NavMenuElement | DecorationElement
+    | HeroElement | LogoElement | NavMenuElement | DecorationElement
     | MotionElement | PlayableElement | ActionBarElement
     | TableViewElement | ModalWidgetElement);
 

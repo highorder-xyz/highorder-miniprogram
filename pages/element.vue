@@ -4,6 +4,7 @@
     <h-header v-if="$props.name=='header'" v-bind="$props.props"></h-header>
     <h-footer v-if="$props.name=='footer'" v-bind="$props.props"></h-footer>
     <h-hero v-if="$props.name=='hero'" v-bind="$props.props"></h-hero>
+    <h-logo v-if="$props.name=='logo'" v-bind="$props.props"></h-logo>
     <h-navbar v-if="$props.name=='navbar'" v-bind="$props.props"></h-navbar>
     <h-action-bar v-if="$props.name=='action_bar'" v-bind="$props.props">
         <template v-if="$props.elements && Object.keys($props.elements).length > 0">
@@ -36,6 +37,7 @@
     import HColumn from '../components/h-column'
     import HNavbar from '../components/h-navbar'
     import HActionBar from '../components/h-action-bar'
+    import HLogo from '../components/h-logo'
     import Element from './element'
     export default {
         name: 'element',
@@ -48,6 +50,7 @@
             HColumn,
             HNavbar,
             HActionBar,
+            HLogo,
             Element
         },
         created() {
