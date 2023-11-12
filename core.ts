@@ -1,6 +1,5 @@
 import { reactive, UnwrapNestedRefs } from "vue"
 import { ShowPageCommand, ServiceOperation, HolaCommand,
-    ShowNarrationCommand,
     ServiceConfig,
     UpdatePageCommand,
     ErrorResponse,
@@ -376,26 +375,12 @@ export interface UpdatePageObject {
 }
 
 
-export interface NarrationParagraph {
-    text: string | string[]
-}
-
-export interface HolaNarration {
-    type: string
-    name: string
-    style?: Record<string, any>
-    paragraphs: NarrationParagraph[]
-}
-
-
 export class Page {
     static instances: Record<string, UnwrapNestedRefs<Page>> = {}
     app_id: string
     name: string
     route: string
     elements: Array<HolaElement>
-    narration: HolaNarration
-    narration_idx: number
     version: number
 
     static getPage(app_id: string){
@@ -413,26 +398,10 @@ export class Page {
         this.name = "app"
         this.route = '/'
         this.elements = []
-        this.narration = {
-            type: "narration",
-            name: "default",
-            paragraphs: []
-        }
-        this.narration_idx = 0
         this.version = 0
     }
 
-    emptyNarration() {
-        this.narration = {
-            type: "narration",
-            name: "default",
-            paragraphs: []
-        }
-        this.narration_idx = 0
-    }
-
     reset() {
-        this.emptyNarration()
         this.version += 1
     }
 
@@ -640,17 +609,6 @@ export class AppCore {
 
     }
 
-    async narrationShowed(name: string): Promise<HolaCommand[]> {
-        try {
-            const commands = await this.svc.holaNarrationShowed(name, this.getPageContext())
-            const ret_commands = await this.handleCommandList(commands)
-            this.app_page.emptyNarration()
-            return ret_commands
-        } catch(err: any) {
-            return await this.handleError(err)
-        }
-
-    }
 
     async playableCompleted(played: PlayableResult): Promise<HolaCommand[]> {
         console.log('playable completed.', played)
@@ -876,9 +834,6 @@ export class AppCore {
             } else {
                 console.log(`update page with wrong route ${changed_page.route}, app_page route is ${this.app_page.route}`)
             }
-        } else if (command.name === 'show_narration') {
-            const narration = (command as ShowNarrationCommand).args.narration as HolaNarration
-            this.app_page.narration = narration
         } else if (command.name === 'set_player') {
         } else if (command.name === 'update_player') {
         } else if (command.name === 'set_session') {

@@ -5,7 +5,7 @@ import {
     HeaderElement,
     FooterElement, HeroElement, NavMenuElement, MenuItemElement,
     LogoElement,
-    DecorationElement, MotionElement, PlayableElement, NarrationParagraph,
+    DecorationElement, MotionElement, PlayableElement,
     ActionBarElement,
     ActionElement,
     ModalWidgetElement,
@@ -39,7 +39,7 @@ import {
     NavBarElement,
     LinkElement
 } from './core'
-import { 
+import {
     InitAdCommand,
     InitAdCommandArg,
     ShowAdCommand,
@@ -104,10 +104,10 @@ function h(name:string, props?: object, slots?: Record<string, any>){
             sub_elements[name] = elements
         }
     }
-    
+
     const rendered = {
         "name": name,
-        props: {...props}, 
+        props: {...props},
         elements:{...sub_elements}
     }
     return rendered
@@ -127,13 +127,13 @@ export async function startup(): Promise<void> {
     const init_options = app_platform.init_options
     const platform_info = app_platform.getPlatform()
     const language = init_options.language || platform_info['language'] || 'en'
-    
+
     await i18next.init({
         lng: language,
         debug: false,
         resources: resources
     });
-    
+
     await AppCore.init()
     const app_id = AppCore.app_configs.default.appId
     await AppCore.switchTo(app_id)
@@ -156,7 +156,7 @@ const init_elements = [
             }]
         }
     }
-    
+
 ]
 
 export class AlertHelper {
@@ -372,7 +372,7 @@ export class PageRender {
     modal_helper: ModalHelper
     ad_helper: AdHelper
     elements: Array<object>
-    
+
     static getPageRender(app_id: string){
         if(this.instances.hasOwnProperty(app_id)){
             return this.instances[app_id]
@@ -382,7 +382,7 @@ export class PageRender {
             return page
         }
     }
-    
+
     constructor(app_id:string) {
         this.app_id = app_id
         this.loading = true
@@ -392,8 +392,8 @@ export class PageRender {
         this.ad_helper = new AdHelper()
         this.elements = init_elements
     }
-    
-    
+
+
     sessionStart(){
         const timerId = setTimeout(()=> {
             this.loading = true;
@@ -424,7 +424,7 @@ export class PageRender {
             })
         })
     }
-    
+
     callAction(args:Record<string, any>, context: RenderContext){
         const app_core = AppCore.getCore(this.app_id)
         app_core.callAction(args).then((commands: HolaCommand[]) => {
@@ -433,7 +433,7 @@ export class PageRender {
             throw err;
         })
     }
-    
+
     loginWeixin(context: RenderContext) {
         const app_core = AppCore.getCore(this.app_id)
         app_core.loginWeixin().then((commands: HolaCommand[]) => {
@@ -442,7 +442,7 @@ export class PageRender {
             throw err;
         })
     }
-    
+
     navigateTo(route:string, context: RenderContext){
         const timerId = setTimeout(()=> {
             this.loading = true;
@@ -471,7 +471,7 @@ export class PageRender {
             })
         })
     }
-    
+
     playableNext(level_id:string, context: RenderContext) {
         const app_core = AppCore.getCore(this.app_id)
         app_core.playableNext(level_id).then((commands: HolaCommand[]) => {
@@ -480,7 +480,7 @@ export class PageRender {
             throw err;
         })
     }
-    
+
     playableRetry(level_id:string, context: RenderContext) {
         const app_core = AppCore.getCore(this.app_id)
         app_core.playableRetry(level_id).then((commands: HolaCommand[]) => {
@@ -489,7 +489,7 @@ export class PageRender {
             throw err;
         })
     }
-    
+
     playableCompleted(played: PlayableResult, context: RenderContext) {
         const app_core = AppCore.getCore(this.app_id)
         app_core.playableCompleted(played).then((commands: HolaCommand[]) => {
@@ -498,14 +498,14 @@ export class PageRender {
             throw err;
         })
     }
-    
+
     handleBackTo(target: any, context: RenderContext) {
         const new_hash = (target as Window).location.hash
         if (new_hash.length > 1) {
             this.navigateTo(new_hash.slice(1), context)
         }
     }
-    
+
     executeUseItem(item_name: string, context:RenderContext){
         const app_core = AppCore.getCore(this.app_id)
         app_core.itemUse(item_name).then((commands: HolaCommand[]) => {
@@ -514,7 +514,7 @@ export class PageRender {
             throw err;
         })
     }
-    
+
     executeBuyItem(item_name: string, context:RenderContext){
         const app_core = AppCore.getCore(this.app_id)
         app_core.itemBuy(item_name).then((commands: HolaCommand[]) => {
@@ -523,7 +523,7 @@ export class PageRender {
             throw err;
         })
     }
-    
+
     executeShowAd(ad_args: Record<string, any>, callback:Function) {
         console.log('show ad', ad_args)
         this.ad_helper.showAdNow(ad_args as AdShowOptions, (ret: ConditionResponse) => {
@@ -535,11 +535,11 @@ export class PageRender {
                     ad_type: ad_args['ad_type']
                 })
             }
-    
+
             callback(ret)
         })
     }
-    
+
     async handleImmediateCommands(commands: HolaCommand[], context: RenderContext){
         for(const [idx, command] of commands.entries()){
             if(command.name === 'start_new_session'){
@@ -593,7 +593,7 @@ export class PageRender {
         }
         this.render()
     }
-    
+
     executeAction(action: string, args: Record<string, any> = {}, context: RenderContext){
         console.log('execute action: ', action, args)
         const acts = action.split('.')
@@ -602,7 +602,7 @@ export class PageRender {
             return
         }
         const ns = acts[0]
-    
+
         if(ns === 'builtin'){
             const func = acts[1]
         } else if (ns === 'login') {
@@ -661,7 +661,7 @@ export class PageRender {
             if(func === 'show'){
                 const ad_args = args.ad_args
                 this.executeShowAd(ad_args, () => {
-    
+
                 })
                 app_platform.logEvent(AnalyticsEventKind.ad_show_event, {
                     name: "active",
@@ -676,7 +676,7 @@ export class PageRender {
             console.log(`unknown action ${action}`)
         }
     }
-    
+
     executeConditionAction(action: string, args: Record<string, any>, callback: Function){
         console.log('execute condition action: ', action, args)
         const acts = action.split('.')
@@ -693,7 +693,7 @@ export class PageRender {
                 this.executeShowAd(ad_args, (cond: ConditionResponse) => {
                     callback(cond)
                 })
-    
+
             } else {
                 callback({ok: false, message: i18next.t('unsupported_condition')})
             }
@@ -701,7 +701,7 @@ export class PageRender {
             callback({ok: false, message: i18next.t('unsupported_condition')})
         }
     }
-    
+
     tranformStyle(style: Record<string, any>){
         const new_style: Record<string, any> = {}
         for(const [key, value] of Object.entries(style)){
@@ -714,7 +714,7 @@ export class PageRender {
         }
         return new_style
     }
-    
+
     renderNavBar(element: NavBarElement, context: RenderContext): object {
         return h("navbar", {
             title: element.title ?? "",
@@ -746,7 +746,7 @@ export class PageRender {
             }
         })
     }
-    
+
     renderSubElements(elements: HolaElement[] | undefined, context: RenderContext): object[] {
         const sub_nodes:object[] = []
         if(elements && elements?.length > 0){
@@ -759,7 +759,7 @@ export class PageRender {
         }
         return sub_nodes
     }
-    
+
     renderHeader(element: HeaderElement, context: RenderContext): object {
         return h("header", {}, {
             "start": () => {
@@ -773,7 +773,7 @@ export class PageRender {
             }
         })
     }
-    
+
     renderFooter(element: FooterElement, context: RenderContext): object {
         const app_core = AppCore.getCore(this.app_id)
         const footer_main = element.element
@@ -802,15 +802,15 @@ export class PageRender {
         }
         return h("footer", { text: text, rightActions: right_actions })
     }
-    
+
     renderSeparator(element: SeparatorElement, context: RenderContext){
         return h("divider")
     }
-    
+
     renderTitle(element: TitleElement, context: RenderContext){
         return h("title", {title: element.title, level: element.level, sub_title: element.sub_title ?? ""})
     }
-    
+
     renderLink(element: LinkElement, context: RenderContext){
         return h("link", {text: element.text,
             target_url: element.target_url,
@@ -824,37 +824,37 @@ export class PageRender {
             }
         })
     }
-    
-    
+
+
     renderParagraph(element: ParagraphElement, context: RenderContext){
         return h("paragraph", {
             text: element.text,
             align: element.align
         })
     }
-    
+
     renderBulletedList(element: BulletedListElement, context: RenderContext){
         return h("bulleted_list", {
             texts: element.texts
         })
     }
-    
+
     renderStarRating(element: StarRatingElement, context: RenderContext){
         return h("star_rating", {rating:element.rating, annimation:element.animate})
     }
-    
+
     renderIcon(element: IconElement, context: RenderContext){
         const style = element.style ?? {}
         const app_core = AppCore.getCore(this.app_id)
         return h("icon", {...style, icon:app_core.full_link(element.icon)})
     }
-    
+
     renderIconText(element: IconTextElement, context: RenderContext){
         const style = element.style ?? {}
         const app_core = AppCore.getCore(this.app_id)
         return h("icon_text", {...style, text:element.text, icon:app_core.full_link(element.icon)})
     }
-    
+
     renderIconNumber(element: IconNumberElement, context: RenderContext){
         const app_core = AppCore.getCore(this.app_id)
         return h("icon_count_text", {
@@ -865,17 +865,17 @@ export class PageRender {
             }
         })
     }
-    
+
     renderIconTitle(element: IconTitleElement, context: RenderContext){
         const app_core = AppCore.getCore(this.app_id)
         return h("icon_title", {icon: app_core.full_link(element.icon), count:element.count})
     }
-    
+
     renderButton(element: ButtonElement, context: RenderContext){
         const actionFn = () => {
             this.executeAction(element.action, element.args, context)
         }
-    
+
         const style = this.tranformStyle(element.style ?? {})
         let close_modal = false
         if(element.action_props){
@@ -927,7 +927,7 @@ export class PageRender {
                                 this.alert_helper.show(ret.message)
                             }
                         }
-    
+
                     })
                 } else if(element.action) {
                     actionFn()
@@ -942,12 +942,12 @@ export class PageRender {
             }
         })
     }
-    
+
     renderIconButton(element: ButtonElement, context: RenderContext){
         const actionFn = () => {
             this.executeAction(element.action, element.args, context)
         }
-    
+
         const style = this.tranformStyle(element.style ?? {})
         return h("icon_button", {
             text: element.text,
@@ -989,7 +989,7 @@ export class PageRender {
                             if (context.modal_id !== undefined){
                                 this.modal_helper.popup(context.modal_id)
                             }
-    
+
                         })
                     } else {
                         actionFn()
@@ -1002,29 +1002,29 @@ export class PageRender {
             }
         })
     }
-    
+
     renderProgressBar(element: ProgressBarElement, context: RenderContext){
         const props:Record<string, any> = {
         }
         if(element.percent !== undefined){
             props['percent'] = element.percent
         }
-    
+
         if(element.value !== undefined && element.total !== undefined){
             props['value'] = element.value
             props['total'] = element.total
         }
         return h("progress_bar", {...props, ...element.style}, {})
     }
-    
+
     renderAnnotationText(element: AnnotationTextObject, context: RenderContext) {
         return h("annotation_text", {text: element.text, annotation: element.annotation})
     }
-    
+
     renderPlainText(element: PlainTextObject, context: RenderContext) {
         return h('plain_text', {"text": element.text})
     }
-    
+
     renderRowLine(element: RowLineElement, context: RenderContext) {
         return h("row", {...element.style}, {
             default: () => {
@@ -1036,7 +1036,7 @@ export class PageRender {
             }
         })
     }
-    
+
     renderColumn(element: ColumnElement, context: RenderContext) {
         return h("column", {...element.style}, {
             default: () => {
@@ -1048,7 +1048,7 @@ export class PageRender {
             }
         })
     }
-    
+
     renderImage(element: ImageElement, context: RenderContext) {
         const args: any = {
             image_url: element.image_url
@@ -1058,7 +1058,7 @@ export class PageRender {
         }
         return h("image_view", {...args, ...element.style})
     }
-    
+
     renderVideo(element: VideoElement, context: RenderContext) {
         const args: any = {
             video_url: element.video_url,
@@ -1071,7 +1071,7 @@ export class PageRender {
         }
         return h("video_player", {...args, ...element.style})
     }
-    
+
     renderModalWidget(element:ModalWidgetElement, context:RenderContext): object | undefined {
         if(!element){
             return undefined
@@ -1121,7 +1121,7 @@ export class PageRender {
             console.warn(`not supported widget type ${element.type}`)
         }
     }
-    
+
     renderModalElements(elements: ModalWidgetElement[], context:RenderContext): object[] {
         const nodes: object[] = []
         for(const element of elements){
@@ -1132,7 +1132,7 @@ export class PageRender {
         }
         return nodes
     }
-    
+
     getModalOption(open_modal: ModalElement, context: RenderContext){
         const title_action = open_modal.title_action ?? undefined
         if(title_action !== undefined &&  Object.keys(title_action).length > 0){
@@ -1170,17 +1170,17 @@ export class PageRender {
         }
         return modal_options
     }
-    
+
     openModal(open_modal: ModalElement, args: Record<string, any>, context: RenderContext){
         const modal_id = this.modal_helper.new_modal_id()
         let sub_context = { ...context }
         sub_context.modal_id = modal_id
-    
+
         let inplace = false
         if ('inplace' in args){
             inplace = args['inplace']
         }
-    
+
         if(context.modal_id !== undefined){
             this.modal_helper.open_sub(
                 {
@@ -1207,10 +1207,10 @@ export class PageRender {
                 }
             )
         }
-    
+
     }
-    
-    
+
+
     renderActionBar(element: ActionBarElement, context: RenderContext): object {
         const actions:IconActionDefinition[] = [];
         const app_core = AppCore.getCore(this.app_id)
@@ -1230,19 +1230,19 @@ export class PageRender {
                         } else if (action.action){
                             this.executeAction(action.action, action.args, context)
                         }
-    
+
                         app_platform.logEvent(AnalyticsEventKind.button_event, {
                             route: this.page.route,
                             text: action.text
                         })
-    
+
                     }
                 })
             }
         }
         return h("action_bar", {actions: actions})
     }
-    
+
     renderTableView(element: TableViewElement, context: RenderContext): object {
         return h("table_view", {
             columns: element.columns,
@@ -1256,7 +1256,7 @@ export class PageRender {
             }
         })
     }
-    
+
     renderCard(element: CardElement, context: RenderContext): object {
         return h("card", {
             title: element.title ?? "",
@@ -1268,7 +1268,7 @@ export class PageRender {
             }
         })
     }
-    
+
     renderCardSwiper(element: CardSwiperElement, context: RenderContext): object {
         return h("card_swiper", {
             title: element.title ?? "",
@@ -1278,16 +1278,16 @@ export class PageRender {
             }
         })
     }
-    
+
     renderHero(element: HeroElement, context: RenderContext): object {
-        return h("hero", { title: element.title, text: element.text, 
+        return h("hero", { title: element.title, text: element.text,
             image_src: element.image_src, annotation_text: element.element })
     }
-    
+
     renderLogo(element: LogoElement, context: RenderContext): object {
         return h("logo", { text: element.text, image_src: element.image_src})
     }
-    
+
     renderNavMenu(element: NavMenuElement, context: RenderContext): object {
         const style = element.style ?? {}
         const items: MenuItem[] = []
@@ -1321,7 +1321,7 @@ export class PageRender {
                                 this.alert_helper.show(i18next.t('unable_connect_to_server'))
                             }
                         }
-    
+
                     }
                     app_platform.logEvent(AnalyticsEventKind.button_event, {
                         route: this.page.route,
@@ -1332,36 +1332,7 @@ export class PageRender {
         }
         return h("navmenu", {...style, items: items})
     }
-    
-    renderNarration(context: RenderContext): object {
-        const app_core = AppCore.getCore(this.app_id)
-        const paragraph = this.page.narration.paragraphs[this.page.narration_idx]
-        const style = this.page.narration.style ?? {}
-        let text:string = ""
-        if (Array.isArray(paragraph.text)) {
-            text = paragraph.text.join('\n')
-        } else {
-            text = paragraph.text
-        }
-    
-        return h("modal", {
-            modal_id: this.modal_helper.new_modal_id(),
-            showNow: true,
-            animate: true,
-            text: text,
-            ...style,
-            onModalClicked: async () => {
-                if (this.page.narration_idx < this.page.narration.paragraphs.length - 1) {
-                    this.page.narration_idx += 1
-                } else {
-                    console.log('narration end.')
-                    const commands = await app_core.narrationShowed(this.page.narration.name)
-                    this.handleImmediateCommands(commands, context)
-                }
-            }
-        })
-    }
-    
+
     renderElementOrList(element: HolaElement | HolaElement[], context: RenderContext): object | object[] | undefined{
         if(Array.isArray(element)){
             const elements:object[] = []
@@ -1376,7 +1347,7 @@ export class PageRender {
             return this.renderElement(element, context)
         }
     }
-    
+
     renderElement(element: HolaElement, context: RenderContext): object | undefined {
         if (element.type === "navbar") {
             return this.renderNavBar(element as NavBarElement, context)
@@ -1405,7 +1376,7 @@ export class PageRender {
             return this.renderModalWidget(element as ModalWidgetElement, context)
         }
     }
-    
+
     renderPage(): object[] {
         const children: object[] = []
         for (const element of this.page.elements) {
@@ -1418,20 +1389,17 @@ export class PageRender {
                 children.push(rendered)
             }
         }
-        if (this.page.narration.paragraphs.length > 0) {
-            children.push(this.renderNarration({route: this.page.route, modal_id: undefined}))
-        }
         // return h('div', { class: ["page"] }, undefined, [...children])
         return children;
     }
-    
+
     renderAdditional(): object[] {
         const children: object[] = []
         const modelNode2 = this.modal_helper.render()
         if (modelNode2) {
             children.push(modelNode2)
         }
-    
+
         //children.push(this.alert_helper.render())
         const app_core = AppCore.getCore(this.app_id)
         if(this.loading){
@@ -1439,7 +1407,7 @@ export class PageRender {
         }
         return children
     }
-    
+
     render() {
         this.elements = [...this.renderPage(), ...this.renderAdditional()]
     }
